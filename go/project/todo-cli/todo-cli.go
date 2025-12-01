@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -8,7 +9,7 @@ import (
 	"time"
 )
 
-// Terminal color codes
+// Colors
 const (
 	Red    = "\033[31m"
 	Green  = "\033[32m"
@@ -17,7 +18,7 @@ const (
 	Reset  = "\033[0m"
 )
 
-// Todo struct defines a task
+// Todo struct
 type Todo struct {
 	ID        int       `json:"id"`
 	Task      string    `json:"task"`
@@ -30,9 +31,16 @@ type Todo struct {
 var todos []Todo
 var dataFile = "todo_advanced.json"
 
-// ------------------ FUNCTIONS ------------------
+// ---------- UTIL: Clean Input Reader ----------
+var reader = bufio.NewReader(os.Stdin)
 
-// Load todos from JSON file
+func input(prompt string) string {
+	fmt.Print(prompt)
+	text, _ := reader.ReadString('\n')
+	return strings.TrimSpace(text)
+}
+
+// ---------- Load Todos ----------
 func loadTodos() {
 	file, err := os.Open(dataFile)
 	if err != nil {
@@ -43,22 +51,29 @@ func loadTodos() {
 		panic(err)
 	}
 	defer file.Close()
+
 	json.NewDecoder(file).Decode(&todos)
 }
 
-// Save todos to JSON file
+// ---------- Save Todos (Pretty JSON) ----------
 func saveTodos() {
 	file, err := os.Create(dataFile)
 	if err != nil {
 		panic(err)
 	}
 	defer file.Close()
-	json.NewEncoder(file).Encode(todos)
+
+	pretty, _ := json.MarshalIndent(todos, "", "  ")
+	file.Write(pretty)
 }
 
-// Add a new task
+// ---------- Add Task ----------
 func addTask(task, category, due string) {
-	id := len(todos) + 1
+	id := 1
+	if len(todos) > 0 {
+		id = todos[len(todos)-1].ID + 1
+	}
+
 	todo := Todo{
 		ID:        id,
 		Task:      task,
@@ -67,141 +82,99 @@ func addTask(task, category, due string) {
 		Done:      false,
 		CreatedAt: time.Now(),
 	}
+
 	todos = append(todos, todo)
-	fmt.Println(Green+"Added task:"+Reset, task)
+	fmt.Println(Green+"✔ Task added:"+Reset, task)
 }
 
-// List all tasks with colors
+// ---------- List Tasks ----------
 func listTasks() {
 	if len(todos) == 0 {
 		fmt.Println(Yellow + "No tasks found." + Reset)
 		return
 	}
-	fmt.Println(Blue + "Your Tasks:" + Reset)
+
+	fmt.Println("\n" + Blue + "-------- Your Tasks --------" + Reset)
 	for _, t := range todos {
 		status := Red + "❌" + Reset
 		if t.Done {
 			status = Green + "✔️" + Reset
 		}
-		fmt.Printf("%d. [%s] %s (Category: %s, Due: %s)\n", t.ID, status, t.Task, t.Category, t.DueDate)
+
+		fmt.Printf(
+			"%d. [%s] %s  (%s, Due: %s)\n",
+			t.ID, status, t.Task, t.Category, t.DueDate,
+		)
 	}
 }
 
-// Mark a task as done
+// ---------- Mark Done ----------
 func markDone(id int) {
 	for i, t := range todos {
 		if t.ID == id {
 			todos[i].Done = true
-			fmt.Println(Green+"Marked as done:"+Reset, t.Task)
+			fmt.Println(Green+"✔ Marked as Done:"+Reset, t.Task)
 			return
 		}
 	}
 	fmt.Println(Red + "Task not found!" + Reset)
 }
 
-// Delete a task
+// ---------- Delete Task ----------
 func deleteTask(id int) {
 	for i, t := range todos {
 		if t.ID == id {
 			todos = append(todos[:i], todos[i+1:]...)
-			fmt.Println(Red+"Deleted:"+Reset, t.Task)
+			fmt.Println(Red+"🗑 Deleted:"+Reset, t.Task)
 			return
 		}
 	}
 	fmt.Println(Red + "Task not found!" + Reset)
 }
 
-// ------------------ MAIN ------------------
-
+// ---------- MAIN ----------
 func main() {
 	loadTodos()
 
 	for {
-		fmt.Println("\n" + Blue + "Todo CLI Advanced Menu:" + Reset)
+		fmt.Println("\n" + Blue + "------- TODO CLI MENU -------" + Reset)
 		fmt.Println("1. Add Task")
 		fmt.Println("2. List Tasks")
-		fmt.Println("3. Mark Done")
+		fmt.Println("3. Mark as Done")
 		fmt.Println("4. Delete Task")
 		fmt.Println("5. Exit")
 
-		var choice int
-		fmt.Print("Enter your choice: ")
-		fmt.Scan(&choice)
+		choice := input("Enter choice: ")
 
 		switch choice {
-		case 1:
-			var task, category, due string
-			fmt.Print("Enter task: ")
-			fmt.Scanln()
-			task, _ = readLine()
-			fmt.Print("Enter category (Work/Personal/Study): ")
-			category, _ = readLine()
-			fmt.Print("Enter due date (YYYY-MM-DD): ")
-			due, _ = readLine()
+		case "1":
+			task := input("Enter task: ")
+			category := input("Enter category (Work/Study/Personal): ")
+			due := input("Enter due date (YYYY-MM-DD): ")
 			addTask(task, category, due)
-		case 2:
+
+		case "2":
 			listTasks()
-		case 3:
+
+		case "3":
+			idStr := input("Enter task ID to mark done: ")
 			var id int
-			fmt.Print("Enter task ID to mark done: ")
-			fmt.Scan(&id)
+			fmt.Sscanf(idStr, "%d", &id)
 			markDone(id)
-		case 4:
+
+		case "4":
+			idStr := input("Enter task ID to delete: ")
 			var id int
-			fmt.Print("Enter task ID to delete: ")
-			fmt.Scan(&id)
+			fmt.Sscanf(idStr, "%d", &id)
 			deleteTask(id)
-		case 5:
+
+		case "5":
 			saveTodos()
-			fmt.Println(Green + "Goodbye!" + Reset)
+			fmt.Println(Green + "Saved. Goodbye!" + Reset)
 			return
+
 		default:
-			fmt.Println(Red + "Invalid choice, try again!" + Reset)
+			fmt.Println(Red + "Invalid option, try again." + Reset)
 		}
 	}
 }
-
-// readLine(): Helper to read multi-word input
-func readLine() (string, error) {
-	var input string
-	_, err := fmt.Scanln(&input)
-	if err != nil {
-		buf := make([]byte, 1024)
-		n, _ := os.Stdin.Read(buf)
-		input = strings.TrimSpace(string(buf[:n]))
-	}
-	return input, err
-}
-
-/*
-------------------- EXPLANATION -------------------
-
-1. Terminal Colors
-   - Red, Green, Blue, Yellow, Reset for colored output
-
-2. Todo struct
-   - Added Category and DueDate fields for advanced functionality
-
-3. addTask()
-   - Accepts task name, category, and due date
-   - Appends to todos slice
-
-4. listTasks()
-   - Shows task status with colored checkmarks
-   - Prints category and due date
-
-5. readLine()
-   - Reads multi-word input from user
-   - Ensures tasks like "Buy milk and bread" work properly
-
-6. Persistent Storage
-   - loadTodos() and saveTodos() handle JSON file
-   - Tasks are saved between program runs
-
-7. Menu
-   - Infinite loop
-   - User chooses option
-   - Handles Add, List, Mark Done, Delete, Exit
-
----------------------------------------------------
-*/
