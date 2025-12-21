@@ -1,85 +1,104 @@
-# Go Variables Program
+# Go Type Conversion Program
 
-This is a simple Go program demonstrating **variables in Go**. It covers different ways to declare and use variables, multiple variable declarations, short-hand declarations, and zero values.
-
----
-
-## 📂 Files
-
-- `variables.go` – Main program file demonstrating variable usage in Go.
+This Go program demonstrates **type conversion in Go**. It shows how to convert between different numeric types (integers and floats) and explains the behavior of such conversions.
 
 ---
 
-## 📝 Program Features
+## 📂 File
 
-1. **Variable Declaration with Type**
-   ```go
-   var a int = 10
-   var name string = "Madhav"
-   ```
-2. **Variable Declaration without Type (Type Inference)**
-
-   ```bash
-   var b = 20
-   var city = "Delhi"
-   ```
-
-3. **Short-hand Declaration (Inside Functions Only)**
-
-   ```bash
-   c := 30
-   isGo := true
-   ```
-
-4. **Multiple Variable Declaration**
-
-   ```bash
-   var x, y, z int = 1, 2, 3
-   p, q := 5, "Go"
-   ```
-
-5. **Multiple Variable Declaration**
-   - Demonstrates default values for uninitialized variables:
-   ```bash
-    var n int // 0
-    var s string // ""
-    var f float64 // 0
-    var flag bool // false
-   ```
+- `type-conversion.go` – Main program file demonstrating type conversion in Go
 
 ---
 
-# ⚡ How to Run
+## 🧾 Program Code
 
-1. Make sure Go is installed.
-2. Open terminal and navigate to the folder containing variables.go.
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var a int = 10
+	var b float64 = 3.5
+
+	// Type Conversion
+	var sum float64 = float64(a) + b
+
+	fmt.Println("Integer value:", a)
+	fmt.Println("Float value:", b)
+	fmt.Println("Sum after type conversion:", sum)
+
+	// int to float
+	var x int = 25
+	var y float64 = float64(x)
+	fmt.Println("Int to Float:", y)
+
+	// float to int (decimal part lost)
+	var p float64 = 9.8
+	var q int = int(p)
+	fmt.Println("Float to Int:", q)
+}
+```
+
+---
+
+## ⚙️ Explanation
+
+**package main**  
+Required for executable Go programs.
+
+**import "fmt"**  
+Used for printing output to the console.
+
+**Type Conversion Syntax**  
+`targetType(value)` – Converts value to targetType
+
+**int to float64**  
+`float64(a)` – Converts integer to float, preserves value exactly
+
+**float64 to int**  
+`int(p)` – Converts float to integer, **truncates decimal part** (not rounded)
+
+---
+
+## ⚡ How to Run
+
+1. Make sure Go is installed on your system.
+2. Open terminal and navigate to the folder containing `type-conversion.go`.
 3. Run the program:
    ```bash
-   go run variables.go
+   go run type-conversion.go
    ```
-4. go run variables.go
-   ```bash
-   a = 10
-   name = Madhav
-   b = 20
-   city = Delhi
-   c = 30
-   isGo = true
-   x, y, z = 1 2 3
-   p, q = 5 Go
 
-    Zero values:
-    int: 0
-    string:
-    float: 0
-    bool: false
-    ```
+---
 
---- 
+## ▶️ Expected Output
 
-## 🔑 Notes
-- Go is strongly typed.
-- Short-hand := cannot be used outside functions.
-- Unused variables will throw a compile-time error.
-- Uninitialized variables automatically get zero values.
+```
+Integer value: 10
+Float value: 3.5
+Sum after type conversion: 13.5
+Int to Float: 25
+Float to Int: 9
+```
 
+---
+
+## 🔑 Key Points
+
+- **Go does not support implicit type conversion** – you must explicitly convert types
+- Converting `int` to `float` preserves the value exactly
+- Converting `float` to `int` **truncates** (removes) the decimal part – it does **not** round
+- Type conversion uses the syntax: `type(value)`
+- Mixed-type arithmetic requires explicit conversion
+- Always ensure the target type can hold the value to avoid overflow
+
+---
+
+## ⚠️ Important Notes
+
+- **9.8** converted to `int` becomes **9** (not 10)
+- Converting large floats to smaller int types can cause overflow
+- Go will throw a compile-time error if you try to mix types without conversion
+
+---
