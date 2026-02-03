@@ -3,7 +3,9 @@
 <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/go/go-original-wordmark.svg" alt="Go Logo" width="100">
 
 # ⚡ DAMN-GO
+
 ### The Ultimate Golang Mastery Path
+
 **Accelerate your journey from Syntax to Production-Grade Systems.**
 
 <p align="center">
@@ -30,15 +32,15 @@
 <summary>📂 <b>Phase 1: Foundations (The Core)</b></summary>
 <br>
 
-| Module | Topic | Status |
-| :--- | :--- | :---: |
-| [00-setup](./00-setup) | Environment & Installation | ✅ |
-| [01-basics](./01-basics) | Syntax, Variables & Types | ✅ |
-| [02-control-flow](./02-control-flow) | Logic, Loops & Conditionals | ✅ |
-| [03-collections](./03-collections) | Arrays, Slices & Maps | ✅ |
-| [04-functions](./04-functions) | Logic Blocks & Closures | ✅ |
-| [05-pointers](./05-pointers) | Memory & Addresses | ✅ |
-| [06-structs-methods](./06-structs-and-methods) | Custom Types & Behavior | 🔥 |
+| Module                                         | Topic                       | Status |
+| :--------------------------------------------- | :-------------------------- | :----: |
+| [00-setup](./00-setup)                         | Environment & Installation  |   ✅   |
+| [01-basics](./01-basics)                       | Syntax, Variables & Types   |   ✅   |
+| [02-control-flow](./02-control-flow)           | Logic, Loops & Conditionals |   ✅   |
+| [03-collections](./03-collections)             | Arrays, Slices & Maps       |   ✅   |
+| [04-functions](./04-functions)                 | Logic Blocks & Closures     |   ✅   |
+| [05-pointers](./05-pointers)                   | Memory & Addresses          |   ✅   |
+| [06-structs-methods](./06-structs-and-methods) | Custom Types & Behavior     |   🔥   |
 
 </details>
 
@@ -48,7 +50,7 @@
 
 - [07-interfaces](./07-interfaces) - Polymorphism & Decoupling
 - [08-concurrency](./08-concurrency) - Goroutines & Channels
-- [09-error-handling](./09-error-handling) - The Go Way of Errors
+- [09-error-handling](./09-error-handling) - The Go Way of Errors ✅
 - [10-file-handling](./10-file-handling) - I/O Operations
 
 </details>
@@ -66,7 +68,8 @@
 ---
 
 ## 🛠️ Project Showcase
-*Each project is a deep dive into specific Go strengths.*
+
+_Each project is a deep dive into specific Go strengths._
 
 <table width="100%">
   <tr>
@@ -105,13 +108,15 @@ cd 06-structs-and-methods/basics && go run structs.go
 <div align="center">
 
 ### 🤝 Contributing
-Found a bug or want to add a module? 
+
+Found a bug or want to add a module?
 **[Fork this Repo](https://github.com/madhav9757/damn-go/fork)** and send a PR!
 
-[⭐ Star this Repo](https://github.com/madhav9757/damn-go) 
+[⭐ Star this Repo](https://github.com/madhav9757/damn-go)
 
 <br>
 <img src="https://media.giphy.com/media/LmNwrBhejkK9EFP504/giphy.gif" width="150">
 
 **Curated with passion by [madhav9757](https://github.com/madhav9757)**
+
 </div>
