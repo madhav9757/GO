@@ -49,7 +49,7 @@
 <br>
 
 - [07-interfaces](./07-interfaces) - Polymorphism & Decoupling
-- [08-concurrency](./08-concurrency) - Goroutines & Channels
+- [08-concurrency](./08-concurrency) - Goroutines & Channels ✅
 - [09-error-handling](./09-error-handling) - The Go Way of Errors ✅
 - [10-file-handling](./10-file-handling) - I/O Operations
 
